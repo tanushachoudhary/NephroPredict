@@ -3,6 +3,10 @@ import { Header } from "@/components/Header";
 import { PatientForm } from "@/components/PatientForm";
 import { PredictionResults } from "@/components/PredictionResults";
 import { ShapExplanation } from "@/components/ShapExplanation";
+import { HealthMetricsChart } from "@/components/HealthMetricsChart";
+import { NearbyDoctors } from "@/components/NearbyDoctors";
+import { LifestyleRecommendations } from "@/components/LifestyleRecommendations";
+import { HealthTips } from "@/components/HealthTips";
 import heroImage from "@/assets/medical-hero.jpg";
 
 export interface PatientData {
@@ -151,12 +155,28 @@ const Index = () => {
                 patientData={patientData}
               />
             )}
+
+            {patientData && (
+              <HealthMetricsChart patientData={patientData} />
+            )}
             
             {shapValues.length > 0 && (
               <ShapExplanation shapValues={shapValues} />
             )}
+
+            {predictionResult && (
+              <LifestyleRecommendations riskLevel={predictionResult.risk_level} />
+            )}
           </div>
         </div>
+
+        {/* Additional Sections */}
+        {predictionResult && (
+          <div className="mt-12 space-y-8">
+            <NearbyDoctors />
+            <HealthTips />
+          </div>
+        )}
       </main>
     </div>
   );
