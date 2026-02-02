@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Header } from "@/components/Header";
+import { ModeSelector, PredictionMode } from "@/components/ModeSelector";
+import { RapidScreeningForm, RapidScreeningData } from "@/components/RapidScreeningForm";
+import { RapidScreeningResult, RapidResult } from "@/components/RapidScreeningResult";
 import { PatientForm } from "@/components/PatientForm";
 import { PredictionResults } from "@/components/PredictionResults";
 import { ShapExplanation } from "@/components/ShapExplanation";
@@ -51,33 +54,91 @@ export interface ShapValues {
 }
 
 const Index = () => {
+  const [mode, setMode] = useState<PredictionMode>("rapid");
   const [patientData, setPatientData] = useState<PatientData | null>(null);
   const [predictionResult, setPredictionResult] = useState<PredictionResult | null>(null);
+  const [rapidResult, setRapidResult] = useState<RapidResult | null>(null);
   const [shapValues, setShapValues] = useState<ShapValues[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Rapid Screening Logic
+  const handleRapidSubmit = async (data: RapidScreeningData) => {
+    setIsLoading(true);
+    
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Calculate risk based on core 5 parameters
+    let riskScore = 0;
+    
+    // Serum Creatinine (most important)
+    if (data.serumCreatinine > 2.0) riskScore += 40;
+    else if (data.serumCreatinine > 1.3) riskScore += 20;
+    
+    // Hemoglobin (anemia indicator)
+    if (data.hemoglobin < 10) riskScore += 25;
+    else if (data.hemoglobin < 12) riskScore += 12;
+    
+    // Blood Pressure
+    if (data.bloodPressure > 140) riskScore += 15;
+    else if (data.bloodPressure > 130) riskScore += 8;
+    
+    // Age factor
+    if (data.age > 65) riskScore += 10;
+    else if (data.age > 50) riskScore += 5;
+    
+    // Specific Gravity (kidney concentration ability)
+    if (data.specificGravity < 1.010) riskScore += 10;
+    
+    // Determine traffic light status
+    let status: "green" | "yellow" | "red";
+    let message: string;
+    let recommendation: string;
+    
+    if (riskScore >= 50) {
+      status = "red";
+      message = "Multiple indicators suggest elevated CKD risk. Your serum creatinine and/or hemoglobin levels are outside normal ranges, which may indicate reduced kidney function.";
+      recommendation = "Please schedule an appointment with a nephrologist or your primary care physician as soon as possible. Further diagnostic tests including eGFR calculation and urine albumin testing are recommended.";
+    } else if (riskScore >= 25) {
+      status = "yellow";
+      message = "Some of your values suggest potential kidney stress. While not immediately concerning, these indicators warrant attention and monitoring.";
+      recommendation = "Consider scheduling a check-up with your doctor within the next 2-4 weeks. Lifestyle modifications such as reducing sodium intake and staying hydrated may help. A comprehensive analysis can provide more detailed insights.";
+    } else {
+      status = "green";
+      message = "Your core kidney function indicators are within normal ranges. Based on these 5 key parameters, your risk of CKD appears low.";
+      recommendation = "Continue maintaining a healthy lifestyle with regular exercise, balanced diet, and adequate hydration. Annual kidney function screening is still recommended, especially if you have diabetes or hypertension.";
+    }
+    
+    setRapidResult({
+      status,
+      message,
+      recommendation,
+      confidence: 0.85 + (Math.random() * 0.1) // 85-95% confidence for rapid model
+    });
+    
+    setIsLoading(false);
+  };
+
+  // Comprehensive Analysis Logic
   const handlePatientSubmit = async (data: PatientData) => {
     setIsLoading(true);
     setPatientData(data);
     
-    // Simulate API call to ML model
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    // Mock prediction result
+    // More sophisticated mock prediction for comprehensive mode
     const mockPrediction: PredictionResult = {
       probability: 0.75,
       risk_level: "High",
       confidence: 0.89,
-      model_used: "XGBoost Ensemble"
+      model_used: "XGBoost Ensemble (Full Model)"
     };
     
-    // Mock SHAP values
     const mockShapValues: ShapValues[] = [
-      { feature: "Serum Creatinine", value: 2.1, impact: "negative", importance: 0.45 },
-      { feature: "Hemoglobin", value: 8.2, impact: "negative", importance: 0.32 },
-      { feature: "Blood Urea", value: 85, impact: "negative", importance: 0.28 },
+      { feature: "Serum Creatinine", value: data.serumCreatinine, impact: "negative", importance: 0.45 },
+      { feature: "Hemoglobin", value: data.hemoglobin, impact: "negative", importance: 0.32 },
+      { feature: "Blood Urea", value: data.bloodUrea, impact: "negative", importance: 0.28 },
       { feature: "Age", value: data.age, impact: "negative", importance: 0.18 },
-      { feature: "Hypertension", value: 1, impact: "negative", importance: 0.15 },
+      { feature: "Hypertension", value: data.hypertension === "yes" ? 1 : 0, impact: "negative", importance: 0.15 },
       { feature: "Albumin", value: data.albumin, impact: "negative", importance: 0.12 },
       { feature: "Specific Gravity", value: data.specificGravity, impact: "positive", importance: 0.08 },
       { feature: "Packed Cell Volume", value: data.packedCellVolume, impact: "positive", importance: 0.06 }
@@ -91,7 +152,18 @@ const Index = () => {
   const handleReset = () => {
     setPatientData(null);
     setPredictionResult(null);
+    setRapidResult(null);
     setShapValues([]);
+  };
+
+  const handleModeChange = (newMode: PredictionMode) => {
+    setMode(newMode);
+    handleReset();
+  };
+
+  const handleSwitchToComprehensive = () => {
+    setMode("comprehensive");
+    setRapidResult(null);
   };
 
   return (
@@ -135,43 +207,65 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Mode Selector */}
+      <div className="container mx-auto px-6 pt-8">
+        <ModeSelector mode={mode} onModeChange={handleModeChange} />
+      </div>
+
       {/* Main Application */}
-      <main className="container mx-auto px-6 py-12">
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Patient Data Input */}
-          <div className="lg:col-span-1">
-            <PatientForm 
-              onSubmit={handlePatientSubmit} 
+      <main className="container mx-auto px-6 py-8">
+        {mode === "rapid" ? (
+          /* Rapid Screening Mode */
+          <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <RapidScreeningForm 
+              onSubmit={handleRapidSubmit}
               isLoading={isLoading}
               onReset={handleReset}
             />
-          </div>
-          
-          {/* Results Section */}
-          <div className="lg:col-span-2 space-y-8">
-            {predictionResult && (
-              <PredictionResults 
-                result={predictionResult}
-                patientData={patientData}
+            
+            {rapidResult && (
+              <RapidScreeningResult 
+                result={rapidResult}
+                onSwitchToComprehensive={handleSwitchToComprehensive}
               />
             )}
-
-            {patientData && (
-              <HealthMetricsChart patientData={patientData} />
-            )}
-            
-            {shapValues.length > 0 && (
-              <ShapExplanation shapValues={shapValues} />
-            )}
-
-            {predictionResult && (
-              <LifestyleRecommendations riskLevel={predictionResult.risk_level} />
-            )}
           </div>
-        </div>
+        ) : (
+          /* Comprehensive Analysis Mode */
+          <div className="grid lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-1">
+              <PatientForm 
+                onSubmit={handlePatientSubmit} 
+                isLoading={isLoading}
+                onReset={handleReset}
+              />
+            </div>
+            
+            <div className="lg:col-span-2 space-y-8">
+              {predictionResult && (
+                <PredictionResults 
+                  result={predictionResult}
+                  patientData={patientData}
+                />
+              )}
 
-        {/* Additional Sections */}
-        {predictionResult && (
+              {patientData && (
+                <HealthMetricsChart patientData={patientData} />
+              )}
+              
+              {shapValues.length > 0 && (
+                <ShapExplanation shapValues={shapValues} />
+              )}
+
+              {predictionResult && (
+                <LifestyleRecommendations riskLevel={predictionResult.risk_level} />
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Additional Sections - Show for both modes when results exist */}
+        {(predictionResult || rapidResult) && (
           <div className="mt-12 space-y-8">
             <NearbyDoctors />
             <HealthTips />
