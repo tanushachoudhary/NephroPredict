@@ -22,13 +22,13 @@ NephroPredict is an advanced machine learning application designed to predict an
 - Health metrics visualization charts
 
 ### Key Capabilities
-- ✅ Real-time risk prediction
-- ✅ Explainable AI with SHAP values
-- ✅ Interactive health metrics charts
-- ✅ Personalized lifestyle recommendations
-- ✅ Nearby doctor/specialist locator
-- ✅ Health tips and educational content
-- ✅ HIPAA-compliant design considerations
+- Real-time risk prediction
+- Explainable AI with SHAP values
+- Interactive health metrics charts
+- Personalized lifestyle recommendations
+- Nearby doctor/specialist locator
+- Health tips and educational content
+- HIPAA-compliant design considerations
 
 ## Getting Started
 
@@ -109,15 +109,3 @@ npm run build
 ```
 
 The production-ready files will be generated in the `dist` directory.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is built for educational and research purposes.
-
-## Disclaimer
-
-This application is designed to support clinical decision-making and should not be used as the sole basis for medical diagnosis or treatment. Always consult with qualified healthcare professionals for medical advice.
