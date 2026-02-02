@@ -1,73 +1,123 @@
-# Welcome to your Lovable project
+# NephroPredict
 
-## Project info
+**AI-Powered Chronic Kidney Disease Assessment**
 
-**URL**: https://lovable.dev/projects/d898e023-d8dd-44a4-9688-b5d272ec635b
+NephroPredict is an advanced machine learning application designed to predict and assess the risk of Chronic Kidney Disease (CKD) using clinical parameters and laboratory values. The application provides explainable AI insights to support clinical decision-making.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+### Dual Assessment Modes
 
-**Use Lovable**
+**🔍 Rapid Screening Mode**
+- Quick assessment using 5 key predictive indicators
+- Traffic light risk system (Green/Yellow/Red)
+- Instant results with confidence scores
+- Ideal for initial screening and triage
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d898e023-d8dd-44a4-9688-b5d272ec635b) and start prompting.
+**🩺 Comprehensive Analysis Mode (Doctor Mode)**
+- Full medical history and laboratory values analysis
+- XGBoost ensemble model predictions
+- SHAP (SHapley Additive exPlanations) value visualization
+- Detailed risk assessment with confidence metrics
+- Health metrics visualization charts
 
-Changes made via Lovable will be committed automatically to this repo.
+### Key Capabilities
+- ✅ Real-time risk prediction
+- ✅ Explainable AI with SHAP values
+- ✅ Interactive health metrics charts
+- ✅ Personalized lifestyle recommendations
+- ✅ Nearby doctor/specialist locator
+- ✅ Health tips and educational content
+- ✅ HIPAA-compliant design considerations
 
-**Use your preferred IDE**
+## Getting Started
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prerequisites
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Node.js (v16 or higher)
+- npm or bun package manager
 
-Follow these steps:
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Clone the repository
+git clone https://github.com/tanushachoudhary/NephroPredict.git
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navigate to the project directory
+cd NephroPredict
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Technology Stack
 
-**Use GitHub Codespaces**
+- **Frontend Framework:** React with TypeScript
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS
+- **UI Components:** shadcn-ui
+- **Charts:** Recharts
+- **State Management:** React Hooks
+- **Routing:** React Router
+- **Icons:** Lucide React
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project Structure
 
-## What technologies are used for this project?
+```
+NephroPredict/
+├── src/
+│   ├── components/        # React components
+│   │   ├── ui/           # shadcn-ui components
+│   │   ├── Header.tsx
+│   │   ├── ModeSelector.tsx
+│   │   ├── PatientForm.tsx
+│   │   ├── RapidScreeningForm.tsx
+│   │   ├── PredictionResults.tsx
+│   │   └── ...
+│   ├── pages/            # Page components
+│   │   └── Index.tsx
+│   ├── lib/              # Utility functions
+│   └── hooks/            # Custom React hooks
+├── public/               # Static assets
+└── package.json
+```
 
-This project is built with:
+## Usage
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Rapid Screening
+1. Select "Rapid Screening" mode
+2. Enter 5 key health parameters (age, blood pressure, serum creatinine, hemoglobin, specific gravity)
+3. Click "Quick Screen" to get instant risk assessment
+4. Review the traffic light result and recommendations
 
-## How can I deploy this project?
+### Comprehensive Analysis
+1. Select "Doctor Mode"
+2. Fill in complete patient assessment form with all clinical parameters
+3. Submit for detailed analysis
+4. Review prediction results, SHAP explanations, and health metrics
+5. Access personalized lifestyle recommendations
 
-Simply open [Lovable](https://lovable.dev/projects/d898e023-d8dd-44a4-9688-b5d272ec635b) and click on Share -> Publish.
+## Building for Production
 
-## Can I connect a custom domain to my Lovable project?
+```sh
+npm run build
+```
 
-Yes, you can!
+The production-ready files will be generated in the `dist` directory.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Contributing
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is built for educational and research purposes.
+
+## Disclaimer
+
+This application is designed to support clinical decision-making and should not be used as the sole basis for medical diagnosis or treatment. Always consult with qualified healthcare professionals for medical advice.
