@@ -64,7 +64,7 @@ export const RapidScreeningResult = ({ result, onSwitchToComprehensive }: RapidS
   const config = getStatusConfig(result.status);
 
   return (
-    <Card className="bg-gradient-card shadow-elevated overflow-hidden">
+    <Card className="bg-gradient-card shadow-elevated overflow-hidden max-w-xl mx-auto w-full">
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center space-x-2">
           <div className="flex items-center justify-center w-8 h-8 bg-warning/10 rounded-lg">

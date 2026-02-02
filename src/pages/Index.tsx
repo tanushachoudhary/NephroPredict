@@ -242,7 +242,7 @@ const Index = () => {
             </div>
             
             {predictionResult && (
-              <div className="lg:col-span-2 space-y-8">
+              <div className="lg:col-span-1 space-y-8">
                 <PredictionResults 
                   result={predictionResult}
                   patientData={patientData}
