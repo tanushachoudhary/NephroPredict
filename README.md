@@ -1,4 +1,4 @@
-# NephroPredict
+# NephroPredict📊
 
 **AI-Powered Chronic Kidney Disease Assessment**
 
