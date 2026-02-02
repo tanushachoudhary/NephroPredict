@@ -41,7 +41,7 @@ export const RapidScreeningForm = ({ onSubmit, isLoading, onReset }: RapidScreen
   return (
     <Card className="bg-gradient-card shadow-medical">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center space-x-2">
+        <CardTitle className="flex items-center justify-center space-x-2">
           <div className="flex items-center justify-center w-8 h-8 bg-warning/10 rounded-lg">
             <Zap className="w-4 h-4 text-warning" />
           </div>
@@ -52,7 +52,7 @@ export const RapidScreeningForm = ({ onSubmit, isLoading, onReset }: RapidScreen
         <Alert className="mb-6 bg-muted/50 border-muted">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription className="text-sm">
-            Quick assessment using the 5 most predictive CKD indicators. 
+            Quick assessment using the 5 most predictive CKD indicators.
             For comprehensive analysis, switch to Doctor Mode.
           </AlertDescription>
         </Alert>
@@ -151,9 +151,9 @@ export const RapidScreeningForm = ({ onSubmit, isLoading, onReset }: RapidScreen
           </div>
 
           <div className="flex space-x-3 pt-4">
-            <Button 
-              type="submit" 
-              disabled={isLoading} 
+            <Button
+              type="submit"
+              disabled={isLoading}
               className="flex-1 bg-gradient-to-r from-warning to-warning/80 hover:opacity-90 transition-opacity text-warning-foreground"
             >
               {isLoading ? (
@@ -168,9 +168,9 @@ export const RapidScreeningForm = ({ onSubmit, isLoading, onReset }: RapidScreen
                 </>
               )}
             </Button>
-            <Button 
-              type="button" 
-              variant="outline" 
+            <Button
+              type="button"
+              variant="outline"
               onClick={onReset}
               className="px-4"
             >

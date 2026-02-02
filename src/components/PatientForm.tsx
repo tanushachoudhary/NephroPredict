@@ -51,7 +51,7 @@ export const PatientForm = ({ onSubmit, isLoading, onReset }: PatientFormProps) 
   };
 
   return (
-    <Card className="bg-gradient-card shadow-medical">
+    <Card className="bg-gradient-card shadow-medical mx-auto w-full">
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center space-x-2">
           <div className="flex items-center justify-center w-8 h-8 bg-primary/10 rounded-lg">

@@ -216,7 +216,7 @@ const Index = () => {
       <main className="container mx-auto px-6 py-8">
         {mode === "rapid" ? (
           /* Rapid Screening Mode */
-          <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className={`max-w-xl mx-auto ${rapidResult ? 'grid lg:grid-cols-2 gap-8' : 'flex justify-center'}`}>
             <RapidScreeningForm 
               onSubmit={handleRapidSubmit}
               isLoading={isLoading}
@@ -232,8 +232,8 @@ const Index = () => {
           </div>
         ) : (
           /* Comprehensive Analysis Mode */
-          <div className="grid lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-1">
+          <div className={`${predictionResult ? 'grid lg:grid-cols-3 gap-8' : 'flex justify-center max-w-2xl mx-auto'}`}>
+            <div className={predictionResult ? 'lg:col-span-1' : 'w-full'}>
               <PatientForm 
                 onSubmit={handlePatientSubmit} 
                 isLoading={isLoading}
@@ -241,26 +241,24 @@ const Index = () => {
               />
             </div>
             
-            <div className="lg:col-span-2 space-y-8">
-              {predictionResult && (
+            {predictionResult && (
+              <div className="lg:col-span-2 space-y-8">
                 <PredictionResults 
                   result={predictionResult}
                   patientData={patientData}
                 />
-              )}
 
-              {patientData && (
-                <HealthMetricsChart patientData={patientData} />
-              )}
-              
-              {shapValues.length > 0 && (
-                <ShapExplanation shapValues={shapValues} />
-              )}
+                {patientData && (
+                  <HealthMetricsChart patientData={patientData} />
+                )}
+                
+                {shapValues.length > 0 && (
+                  <ShapExplanation shapValues={shapValues} />
+                )}
 
-              {predictionResult && (
                 <LifestyleRecommendations riskLevel={predictionResult.risk_level} />
-              )}
-            </div>
+              </div>
+            )}
           </div>
         )}
 
